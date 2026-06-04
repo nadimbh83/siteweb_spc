@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Activités Interactives</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:
+        linear-gradient(135deg,#f6f9ff 0%,#eef4ff 100%);
+    font-family:'Poppins', sans-serif;
+    overflow-x:hidden;
+    color:#1f2937;
+}
+.active-link{
+    background:#eaf2ff;
+    color:#2563eb !important;
+
+    box-shadow:
+        0 0 12px rgba(37,99,235,0.15);
+}
+body.dark-mode .active-link{
+    background:#1e293b;
+    color:#60a5fa !important;
+    
+} 
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+
+    width:42px;
+    height:100vh;
+
+    background:rgba(255,255,255,0.92);
+
+    backdrop-filter:blur(12px);
+
+    transition:width 0.45s ease;
+
+    overflow:hidden;
+
+    border-right:1px solid #dfe6ee;
+
+    z-index:1000;
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,0.05);
+}
+
+.sidebar.open{
+    width:280px;
+}
+
+.sidebar-content{
+    padding:40px 30px;
+    width:280px;
+
+    opacity:0;
+    transform:translateX(-20px);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.sidebar.open .sidebar-content{
+    opacity:1;
+    transform:translateX(0);
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+    pointer-events:none;
+}
+
+.sidebar.open .nav{
+    pointer-events:auto;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:700;
+    color:#111827;
+
+    margin-bottom:45px;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#4b5563;
+
+    font-size:16px;
+    font-weight:500;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    transition:0.25s ease;
+}
+
+.nav a:hover{
+    background:#eaf2ff;
+    color:#2563eb;
+    transform:translateX(4px);
+}
+
+/* =========================
+   STRING
+========================= */
+
+.string-area{
+    position:absolute;
+
+    right:-2px;
+    top:0;
+
+    width:52px;
+    height:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:right 0.45s ease;
+}
+
+.sidebar.open .string-area{
+    right:-22px;
+}
+
+svg{
+    width:100%;
+    height:100%;
+    overflow:visible;
+}
+
+.string{
+    fill:none;
+
+    stroke:#3b82f6;
+
+    stroke-width:4;
+
+    filter:
+        drop-shadow(0 0 6px rgba(59,130,246,0.35));
+
+    transition:stroke 0.2s ease;
+}
+
+.string:hover{
+    stroke:#2563eb;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:70vh;
+
+    display:flex;
+    align-items:center;
+
+    padding:80px 10% 80px 120px;
+
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:700px;
+    height:700px;
+
+    background:
+        radial-gradient(circle,
+        rgba(37,99,235,0.14) 0%,
+        transparent 70%);
+
+    top:-250px;
+    right:-150px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:1;
+
+    max-width:850px;
+}
+
+.hero-subtitle{
+    color:#2563eb;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+
+    margin-bottom:18px;
+}
+
+.hero h1{
+    font-size:68px;
+    line-height:1.1;
+
+    margin-bottom:25px;
+
+    color:#111827;
+}
+
+.hero h1 span{
+    color:#2563eb;
+}
+
+.hero p{
+    font-size:20px;
+    line-height:1.9;
+
+    color:#4b5563;
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section{
+    padding:60px 10% 60px 120px;
+}
+
+.section-title{
+    font-size:42px;
+    margin-bottom:20px;
+    color:#111827;
+}
+
+.section-title span{
+    color:#2563eb;
+}
+
+.section-description{
+    color:#4b5563;
+    line-height:1.9;
+    margin-bottom:40px;
+    max-width:900px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+}
+
+.card{
+    position:relative;
+
+    background:rgba(255,255,255,0.82);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:28px;
+
+    padding:35px;
+
+    border:1px solid rgba(255,255,255,0.8);
+
+    overflow:hidden;
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.04);
+
+    transition:0.3s ease;
+}
+
+.card::before{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+
+    top:-120px;
+    right:-120px;
+
+    z-index:0;
+}
+
+.card > *{
+    position:relative;
+    z-index:1;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+
+    box-shadow:
+        0 18px 40px rgba(37,99,235,0.12);
+}
+
+.card h3{
+    font-size:28px;
+    margin-bottom:20px;
+    color:#111827;
+}
+
+.card p{
+    color:#4b5563;
+    line-height:1.8;
+    margin-bottom:20px;
+}
+
+button{
+    background:#2563eb;
+    color:white;
+
+    border:none;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.25s ease;
+}
+
+button:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+/* =========================
+   SLIDER
+========================= */
+
+input[type="range"]{
+    width:100%;
+    margin-top:10px;
+}
+
+/* =========================
+   WAVE
+========================= */
+
+.wave-box{
+    margin-top:25px;
+
+    height:120px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.wave{
+    width:100%;
+    height:80px;
+}
+
+/* =========================
+   QUIZ MODERNE
+========================= */
+
+.quiz-card{
+    min-height:650px;
+}
+
+.quiz-header{
+    margin-bottom:30px;
+}
+
+.progress-bar{
+    width:100%;
+    height:12px;
+
+    background:#dbeafe;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    margin-top:18px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+
+    background:linear-gradient(
+        90deg,
+        #2563eb,
+        #60a5fa
+    );
+
+    border-radius:999px;
+
+    transition:0.5s ease;
+}
+
+.quiz-stack{
+    position:relative;
+
+    min-height:420px;
+}
+
+.quiz-layer{
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    border-radius:28px;
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    transition:0.5s ease;
+}
+
+.quiz-layer:nth-child(1){
+    transform:
+        translateY(18px)
+        scale(0.96);
+
+    opacity:0.45;
+}
+
+.quiz-layer:nth-child(2){
+    transform:
+        translateY(9px)
+        scale(0.98);
+
+    opacity:0.7;
+}
+
+.quiz-main{
+    position:relative;
+
+    background:white;
+
+    border-radius:28px;
+
+    padding:35px;
+
+    min-height:420px;
+
+    border:1px solid #e5e7eb;
+
+    box-shadow:
+        0 12px 35px rgba(37,99,235,0.08);
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    animation:cardAppear 0.5s ease;
+}
+
+@keyframes cardAppear{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(20px)
+            rotate(-2deg);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+}
+
+.quiz-levels{
+    display:flex;
+    gap:12px;
+
+    margin-top:20px;
+}
+
+.level-btn{
+    flex:1;
+
+    background:white;
+    color:#2563eb;
+
+    border:2px solid #dbeafe;
+}
+
+.level-btn.active{
+    background:#2563eb;
+    color:white;
+}
+
+.quiz-question-number{
+    color:#2563eb;
+    font-weight:600;
+
+    margin-bottom:15px;
+}
+
+.quiz-question{
+    font-size:28px;
+    line-height:1.5;
+
+    font-weight:600;
+
+    margin-bottom:30px;
+}
+
+.quiz-options{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.quiz-option{
+    width:100%;
+
+    text-align:left;
+
+    background:#f8fbff;
+    color:#1f2937;
+
+    border:2px solid #dbeafe;
+
+    padding:18px 20px;
+
+    border-radius:18px;
+
+    font-size:16px;
+
+    transition:0.25s ease;
+}
+
+.quiz-option:hover{
+    background:#eff6ff;
+    border-color:#2563eb;
+    color:#2563eb;
+}
+.quiz-option.correct-answer{
+
+    border-color:#16a34a !important;
+
+    background:
+        rgba(22,163,74,0.08);
+
+    color:#16a34a;
+}
+
+.quiz-option.wrong-answer{
+
+    border-color:#dc2626 !important;
+
+    background:
+        rgba(220,38,38,0.08);
+
+    color:#dc2626;
+}
+.quiz-feedback{
+    margin-top:22px;
+
+    font-size:18px;
+    font-weight:600;
+
+    min-height:30px;
+}
+
+.correct{
+    color:#16a34a;
+}
+
+.incorrect{
+    color:#dc2626;
+}
+
+.quiz-bottom{
+    margin-top:28px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+}
+
+.quiz-score{
+    color:#2563eb;
+    font-weight:600;
+}
+
+.hidden{
+    display:none;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    padding:40px 20px 50px 120px;
+
+    color:#6b7280;
+
+    font-size:15px;
+}
+/* =========================
+   THEME TOGGLE
+========================= */
+
+.theme-toggle{
+    margin-top:10px;
+
+    background:#eff6ff;
+    color:#2563eb;
+
+    border:none;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.25s ease;
+}
+
+.theme-toggle:hover{
+    background:#dbeafe;
+    transform:translateX(4px);
+}
+
+/* =========================
+   DARK MODE
+========================= */
+/* =========================
+   DARK MODE - QUIZ
+========================= */
+
+body.dark-mode .quiz-main,
+body.dark-mode .quiz-layer{
+    background:#0f172a;
+
+    border:1px solid #1e293b;
+}
+
+body.dark-mode .quiz-question{
+    color:#f9fafb;
+}
+
+body.dark-mode .quiz-question-number,
+body.dark-mode .quiz-score{
+    color:#93c5fd;
+}
+
+body.dark-mode .quiz-option{
+    background:#111827;
+
+    color:#e5e7eb;
+
+    border:2px solid #1e293b;
+}
+
+body.dark-mode .quiz-option:hover{
+    background:#1e293b;
+
+    border-color:#3b82f6;
+
+    color:#93c5fd;
+}
+
+body.dark-mode .progress-bar{
+    background:#1e293b;
+}
+
+body.dark-mode .level-btn{
+    background:#111827;
+
+    color:#93c5fd;
+
+    border:2px solid #1e293b;
+}
+/* =========================
+   DARK MODE - SLIDERS
+========================= */
+
+body.dark-mode input[type="range"]{
+    accent-color:#60a5fa;
+}
+body.dark-mode .level-btn.active{
+    background:#2563eb;
+
+    color:white;
+}
+body.dark-mode{
+    background:
+        linear-gradient(135deg,#0f172a 0%,#111827 100%);
+
+    color:#f3f4f6;
+}
+
+/* SIDEBAR */
+
+body.dark-mode .sidebar{
+    background:rgba(15,23,42,0.92);
+
+    border-right:1px solid #1e293b;
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .logo{
+    color:#f9fafb;
+}
+
+body.dark-mode .nav a{
+    color:#cbd5e1;
+}
+
+body.dark-mode .nav a:hover{
+    background:#1e293b;
+    color:#60a5fa;
+}
+
+/* HERO */
+
+body.dark-mode .hero h1,
+body.dark-mode .section-title,
+body.dark-mode .card h3{
+    color:#f9fafb;
+}
+
+body.dark-mode .hero p,
+body.dark-mode .section-description,
+body.dark-mode .card p,
+body.dark-mode footer{
+    color:#cbd5e1;
+}
+
+/* CARDS */
+
+body.dark-mode .card{
+    background:rgba(15,23,42,0.72);
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.25);
+}
+
+body.dark-mode .card:hover{
+    box-shadow:
+        0 18px 40px rgba(59,130,246,0.18);
+}
+
+/* INFO BOX */
+
+body.dark-mode .info-box{
+    background:
+        linear-gradient(
+            135deg,
+            #1d4ed8,
+            #2563eb
+        );
+}
+
+/* NUMBERS */
+
+body.dark-mode .card-number{
+    background:#3b82f6;
+}
+
+/* STRING */
+
+body.dark-mode .string{
+    stroke:#60a5fa;
+}
+
+/* BUTTON */
+
+body.dark-mode .theme-toggle{
+    background:#1e293b;
+    color:#93c5fd;
+}
+
+body.dark-mode .theme-toggle:hover{
+    background:#334155;
+}
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .hero,
+    .section{
+        padding-left:90px;
+    }
+
+    .hero h1{
+        font-size:50px;
+    }
+}
+
+@media(max-width:700px){
+
+    .hero,
+    .section{
+        padding:
+            90px 30px 70px 80px;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .hero p{
+        font-size:18px;
+    }
+
+    .section-title{
+        font-size:34px;
+    }
+
+    .quiz-question{
+        font-size:22px;
+    }
+
+    .quiz-levels{
+        flex-direction:column;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-content">
+
+        <div class="logo">
+            Son<span>.</span>
+        </div>
+
+        <div class="nav">
+
+            <a href="index.html">
+                Le Son
+            </a>
+
+            <a href="musique.html">
+                Musique
+            </a>
+
+            <a href="activites.html" class="active-link">
+                Activités
+            </a>
+            
+            <button id="themeToggle" class="theme-toggle">
+                🌙 Mode Nuit
+            </button>
+        </div>
+
+    </div>
+
+    <div class="string-area" id="stringArea">
+
+        <svg viewBox="0 0 100 1000">
+
+            <path
+                id="string"
+                class="string"
+                d="M 50 0 Q 50 500 50 1000"
+            />
+
+        </svg>
+
+    </div>
+
+</div>
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-subtitle">
+            Activités Interactives
+        </div>
+
+        <h1>
+            Explorer le <span>Son</span>
+        </h1>
+
+        <p>
+            Découvrez différentes expériences interactives
+            pour comprendre les sons,
+            leur fréquence et leur rôle dans la musique.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ACTIVITIES -->
+
+<section class="section">
+
+    <h2 class="section-title">
+        Activités <span>Interactives</span>
+    </h2>
+
+    <p class="section-description">
+
+        Testez les activités ci-dessous
+        pour explorer les propriétés du son.
+
+    </p>
+
+    <div class="card-grid">
+
+        <!-- SOUND -->
+
+        <div class="card">
+
+            <h3>
+                🔊 Écouter un son
+            </h3>
+
+            <p>
+                Testez différents types de sons
+                avec plusieurs fréquences.
+            </p>
+
+            <button onclick="playCustomSound(220)">
+                Son Grave (220 Hz)
+            </button>
+
+            <br><br>
+
+            <button onclick="playCustomSound(440)">
+                Son Moyen (440 Hz)
+            </button>
+
+            <br><br>
+
+            <button onclick="playCustomSound(880)">
+                Son Aigu (880 Hz)
+            </button>
+
+        </div>
+
+        <!-- FREQUENCY -->
+
+        <div class="card">
+        
+            <h3>
+                📈 Voir la fréquence
+            </h3>
+        
+            <p>
+                Modifiez la fréquence et l’amplitude
+                pour observer comment l’onde sonore change.
+            </p>
+        
+            <!-- FREQUENCE -->
+        
+            <label
+                style="
+                    font-weight:600;
+                    color:#111827;
+                "
+            >
+                Fréquence
+            </label>
+        
+            <input
+                type="range"
+                min="20"
+                max="20000"
+                value="440"
+                id="frequencySlider"
+            >
+        
+            <p style="margin-top:15px;">
+        
+                Fréquence :
+                <span id="frequencyValue">
+                    440
+                </span> Hz
+        
+            </p>
+        
+            <br>
+        
+            <!-- AMPLITUDE -->
+        
+            <label
+                style="
+                    font-weight:600;
+                    color:#111827;
+                "
+            >
+                Amplitude
+            </label>
+        
+            <input
+                type="range"
+                min="10"
+                max="80"
+                value="30"
+                id="amplitudeSlider"
+            >
+        
+            <p style="margin-top:15px;">
+        
+                Amplitude :
+                <span id="amplitudeValue">
+                    30
+                </span>
+        
+            </p>
+        
+            <br>
+        
+            <span style="color:#2563eb;font-weight:600;">
+        
+                Domaine audible :
+                20 Hz → 20 000 Hz
+        
+            </span>
+        
+            <!-- WAVE -->
+        
+            <div class="wave-box">
+        
+                <svg
+                    class="wave"
+                    viewBox="0 0 600 100"
+                >
+        
+                    <path
+                        id="wavePath"
+                        d=""
+                        stroke="#2563eb"
+                        stroke-width="4"
+                        fill="none"
+                        stroke-linecap="round"
+                    />
+        
+                </svg>
+        
+            </div>
+        
+        </div>
+
+        <!-- MUSIC -->
+
+        <div class="card">
+
+            <h3>
+                🎵 Exemples musicaux
+            </h3>
+
+            <p>
+                Écoutez plusieurs mélodies.
+            </p>
+
+            <button onclick="playMelody1()">
+                Mélodie 1
+            </button>
+
+            <br><br>
+
+            <button onclick="playMelody2()">
+                Mélodie 2
+            </button>
+
+            <br><br>
+
+            <button onclick="playMelody3()">
+                Mélodie 3
+            </button>
+
+        </div>
+
+        <!-- QUIZ -->
+
+        <div class="card quiz-card">
+
+            <div class="quiz-header">
+
+                <h3>
+                    ❓ Quiz Interactif
+                </h3>
+
+            </div>
+
+            <div class="quiz-stack">
+
+                <div class="quiz-layer"></div>
+                <div class="quiz-layer"></div>
+
+                <div class="quiz-main" id="quizMain">
+
+                    <!-- INTRO -->
+                    <div class="progress-bar">
+    
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+    
+                    </div>
+                    <br>
+                    <div id="quizIntro">
+
+                        <div class="quiz-question">
+                            🎧 Testez vos connaissances sur le son !
+                        </div>
+
+                        <p style="line-height:1.8;">
+                            Choisissez une difficulté puis démarrez le quiz interactif.
+                        </p>
+
+                        <div class="quiz-levels">
+
+                            <button
+                                class="level-btn active"
+                                id="beginnerBtn"
+                                onclick="setDifficulty('beginner')"
+                            >
+                                Débutant
+                            </button>
+
+                            <button
+                                class="level-btn"
+                                id="advancedBtn"
+                                onclick="setDifficulty('advanced')"
+                            >
+                                Avancé
+                            </button>
+
+                        </div>
+
+                        <br><br>
+
+                        <button onclick="startQuiz()">
+                            Commencer le Quiz →
+                        </button>
+
+                    </div>
+
+                    <!-- QUIZ CONTENT -->
+
+                    <div
+                        id="quizContent"
+                        class="hidden"
+                    >
+
+                        <div class="quiz-question-number"
+                             id="quizNumber">
+                        </div>
+
+                        <div
+                            class="quiz-question"
+                            id="quizQuestion"
+                        >
+                        </div>
+
+                        <div
+                            class="quiz-options"
+                            id="quizOptions"
+                        >
+                        </div>
+
+                        <div
+                            class="quiz-feedback"
+                            id="quizFeedback"
+                        >
+                        </div>
+
+                        <div class="quiz-bottom">
+
+                            <div
+                                class="quiz-score"
+                                id="quizScore"
+                            >
+                                Score : 0
+                            </div>
+
+                            <button
+                                id="nextButton"
+                                class="hidden"
+                                onclick="nextQuestion()"
+                            >
+                                Question suivante →
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- RESULT -->
+
+                    <div
+                        id="quizResult"
+                        class="hidden"
+                    >
+
+                        <div class="quiz-question">
+                            🎉 Quiz terminé !
+                        </div>
+
+                        <p
+                            id="finalScore"
+                            style="font-size:22px;font-weight:600;color:#2563eb;"
+                        >
+                        </p>
+
+                        <br>
+
+                        <button onclick="restartQuiz()">
+                            Recommencer le quiz
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    © 2026 — Site pédagogique de Physique • Activités interactives
+
+</footer>
+
+<script>
+
+/* =========================
+   SIDEBAR
+========================= */
+
+const sidebar = document.getElementById("sidebar");
+const string = document.getElementById("string");
+const stringArea = document.getElementById("stringArea");
+
+let animating = false;
+
+function vibrateString(){
+
+    return new Promise((resolve) => {
+
+        const frames = [
+
+            "M 50 0 Q -20 500 50 1000",
+            "M 50 0 Q 120 500 50 1000",
+            "M 50 0 Q 0 500 50 1000",
+            "M 50 0 Q 100 500 50 1000",
+            "M 50 0 Q 15 500 50 1000",
+            "M 50 0 Q 85 500 50 1000",
+            "M 50 0 Q 28 500 50 1000",
+            "M 50 0 Q 72 500 50 1000",
+            "M 50 0 Q 40 500 50 1000",
+            "M 50 0 Q 60 500 50 1000",
+            "M 50 0 Q 47 500 50 1000",
+            "M 50 0 Q 53 500 50 1000",
+            "M 50 0 Q 50 500 50 1000"
+        ];
+
+        let i = 0;
+
+        const interval = setInterval(() => {
+
+            string.setAttribute("d", frames[i]);
+
+            i++;
+
+            if(i >= frames.length){
+
+                clearInterval(interval);
+
+                resolve();
+            }
+
+        }, 26);
+
+    });
+}
+
+stringArea.addEventListener("click", async () => {
+
+    if(animating) return;
+
+    animating = true;
+
+    await vibrateString();
+
+    sidebar.classList.toggle("open");
+
+    animating = false;
+});
+
+/* =========================
+   AUDIO
+========================= */
+
+const audioContext =
+    new(window.AudioContext || window.webkitAudioContext)();
+
+/* =========================
+   CUSTOM SOUND
+========================= */
+
+function playCustomSound(frequency){
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gainNode =
+        audioContext.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start();
+
+    gainNode.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioContext.currentTime + 1
+    );
+
+    oscillator.stop(
+        audioContext.currentTime + 1
+    );
+}
+
+/* =========================
+   FREQUENCY VISUAL
+========================= */
+
+const frequencySlider =
+    document.getElementById("frequencySlider");
+
+const amplitudeSlider =
+    document.getElementById("amplitudeSlider");
+
+const frequencyValue =
+    document.getElementById("frequencyValue");
+
+const amplitudeValue =
+    document.getElementById("amplitudeValue");
+
+const wavePath =
+    document.getElementById("wavePath");
+
+let animatedOffset = 0;
+
+function drawWave(){
+
+    const freq =
+        parseInt(frequencySlider.value);
+
+    const amp =
+        parseInt(amplitudeSlider.value);
+
+    frequencyValue.textContent = freq;
+    amplitudeValue.textContent = amp;
+
+    let path = "";
+
+    for(let x = 0; x <= 600; x++){
+
+        const y =
+            50 +
+            Math.sin(
+                (x * freq * 0.00015)
+                + animatedOffset
+            ) * amp;
+
+        path +=
+            (x === 0 ? "M" : "L") +
+            x + " " + y + " ";
+    }
+
+    wavePath.setAttribute("d", path);
+
+    animatedOffset += 0.08;
+
+    requestAnimationFrame(drawWave);
+}
+
+drawWave();
+/* =========================
+   MELODIES
+========================= */
+
+function playSequence(notes){
+
+    notes.forEach((freq, index) => {
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gainNode =
+            audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = freq;
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start(
+            audioContext.currentTime + index * 0.4
+        );
+
+        oscillator.stop(
+            audioContext.currentTime + index * 0.4 + 0.35
+        );
+    });
+}
+
+function playMelody1(){
+
+    playSequence([
+        261.63,
+        329.63,
+        392.00,
+        523.25
+    ]);
+}
+
+function playMelody2(){
+
+    playSequence([
+        523.25,
+        493.88,
+        440.00,
+        392.00
+    ]);
+}
+
+function playMelody3(){
+
+    playSequence([
+        261.63,
+        293.66,
+        329.63,
+        349.23,
+        392.00
+    ]);
+}
+
+/* =========================
+   QUIZ
+========================= */
+
+const beginnerQuiz = [
+
+{
+    question:"Quelle est l’unité de la fréquence ?",
+    options:["Le Volt","Le Hertz (Hz)","Le Décibel"],
+    correct:1
+},
+
+{
+    question:"Le son peut-il se propager dans le vide ?",
+    options:["Oui","Non","Seulement dans l’air"],
+    correct:1
+},
+
+{
+    question:"Plus une fréquence est élevée, plus le son est...",
+    options:["Grave","Aigu","Faible"],
+    correct:1
+}
+
+];
+
+const advancedQuiz = [
+
+{
+    question:"Quel élément différencie deux instruments jouant la même note ?",
+    options:["Le timbre","Le volume","La vitesse"],
+    correct:0
+},
+
+{
+    question:"Dans quel milieu le son se propage-t-il le plus vite ?",
+    options:["Gaz","Liquides","Solides"],
+    correct:2
+},
+
+{
+    question:"Le domaine audible humain est environ...",
+    options:["20 Hz → 20 000 Hz","1 Hz → 100 Hz","1000 Hz → 1 000 000 Hz"],
+    correct:0
+},
+
+{
+    question:"Une onde sonore est...",
+    options:["Une onde mécanique","Une onde lumineuse","Une onde magnétique"],
+    correct:0
+},
+
+{
+    question:"Plus une onde a une grande amplitude...",
+    options:["Plus elle est grave","Plus elle est intense","Plus elle est rapide"],
+    correct:1
+}
+
+];
+
+let currentQuiz = beginnerQuiz;
+let currentQuestion = 0;
+let score = 0;
+
+function setDifficulty(level){
+
+    const beginnerBtn =
+        document.getElementById("beginnerBtn");
+
+    const advancedBtn =
+        document.getElementById("advancedBtn");
+
+    beginnerBtn.classList.remove("active");
+    advancedBtn.classList.remove("active");
+
+    if(level === "beginner"){
+
+        beginnerBtn.classList.add("active");
+        currentQuiz = beginnerQuiz;
+
+    }else{
+
+        advancedBtn.classList.add("active");
+        currentQuiz = advancedQuiz;
+    }
+}
+
+function startQuiz(){
+
+    document.getElementById("quizIntro")
+        .classList.add("hidden");
+
+    document.getElementById("quizContent")
+        .classList.remove("hidden");
+
+    currentQuestion = 0;
+    score = 0;
+
+    loadQuestion();
+}
+
+function loadQuestion(){
+
+    const q = currentQuiz[currentQuestion];
+
+    document.getElementById("quizNumber")
+        .textContent =
+        `Question ${currentQuestion + 1}/${currentQuiz.length}`;
+
+    document.getElementById("quizQuestion")
+        .textContent = q.question;
+
+    document.getElementById("quizScore")
+        .textContent = `Score : ${score}`;
+
+    document.getElementById("quizFeedback")
+        .innerHTML = "";
+
+    document.getElementById("nextButton")
+        .classList.add("hidden");
+
+    const options =
+        document.getElementById("quizOptions");
+
+    options.innerHTML = "";
+
+    const progress =
+        ((currentQuestion) / currentQuiz.length) * 100;
+
+    document.getElementById("progressFill")
+        .style.width = progress + "%";
+
+    q.options.forEach((option, index) => {
+
+        const button =
+            document.createElement("button");
+
+        button.classList.add("quiz-option");
+
+        button.textContent = option;
+
+        button.onclick = () =>
+            selectAnswer(index);
+
+        options.appendChild(button);
+    });
+}
+
+function selectAnswer(index){
+
+    const q = currentQuiz[currentQuestion];
+
+    const feedback =
+        document.getElementById("quizFeedback");
+
+    const buttons =
+        document.querySelectorAll(".quiz-option");
+
+    buttons.forEach((btn, i) => {
+
+        btn.disabled = true;
+
+        if(i === q.correct){
+
+            btn.classList.add(
+                "correct-answer"
+            );
+        }
+    });
+
+    if(index === q.correct){
+
+        score++;
+
+        feedback.innerHTML =
+            "✔ Correct !";
+
+        feedback.className =
+            "quiz-feedback correct";
+
+    }else{
+
+        buttons[index].classList.add(
+            "wrong-answer"
+        );
+
+        feedback.innerHTML =
+            "✘ Incorrect.";
+
+        feedback.className =
+            "quiz-feedback incorrect";
+    }
+
+    document.getElementById("quizScore")
+        .textContent = `Score : ${score}`;
+
+    document.getElementById("nextButton")
+        .classList.remove("hidden");
+}
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion < currentQuiz.length){
+
+        loadQuestion();
+
+    }else{
+
+        showResult();
+    }
+}
+
+function showResult(){
+
+    document.getElementById("quizContent")
+        .classList.add("hidden");
+
+    document.getElementById("quizResult")
+        .classList.remove("hidden");
+
+    document.getElementById("progressFill")
+        .style.width = "100%";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        `Votre score final : ${score}/${currentQuiz.length}`;
+}
+
+function restartQuiz(){
+
+    document.getElementById("quizResult")
+        .classList.add("hidden");
+
+    document.getElementById("quizIntro")
+        .classList.remove("hidden");
+
+    document.getElementById("progressFill")
+        .style.width = "0%";
+}
+/* =========================
+   DARK MODE
+========================= */
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+/* LOAD SAVED THEME */
+
+if(localStorage.getItem("theme") === "dark"){
+
+    document.body.classList.add("dark-mode");
+
+    themeToggle.innerHTML =
+        "☀️ Mode Jour";
+}
+
+/* TOGGLE THEME */
+
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    const darkMode =
+        document.body.classList.contains("dark-mode");
+
+    if(darkMode){
+
+        themeToggle.innerHTML =
+            "☀️ Mode Jour";
+
+        localStorage.setItem(
+            "theme",
+            "dark"
+        );
+
+    }else{
+
+        themeToggle.innerHTML =
+            "🌙 Mode Nuit";
+
+        localStorage.setItem(
+            "theme",
+            "light"
+        );
+    }
+});
+</script>
+
+</body>
+</html>
